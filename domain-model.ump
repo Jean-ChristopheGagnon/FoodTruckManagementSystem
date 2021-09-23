@@ -1,0 +1,88 @@
+/**
+ * This file contains the full domain model for the Food Truck Managment System.
+ * To avoid unnesessary noise, only the most unclear class and member definitions
+ * have been commented.
+ * 
+ * @author Rami Djema
+ * @author Maxence Frenette
+ */
+namespace ca.mcgill.ecse321.team7.foodtruckmanagementsystem.model;
+
+class FoodTruckManagementSystem {
+    singleton;
+    1 -> * FoodTruck;
+    1 -> * Staff;
+    1 -> * EquipmentType;
+    1 -> * SupplyType;
+    /**
+     * List of all the menus. It couldn't have been named menus because of a bug in umple.
+     * 
+     * @see https://github.com/umple/umple/issues/903
+     */
+    1 -> * Menu foodList;
+}
+
+class FoodTruck {
+    String location;
+    1 -> * Equipment;
+    * -> * Staff;
+    * -> 1 Menu;
+    1 -> * Supply;
+    1 -> * Order;
+}
+
+class Staff {
+    1 -> * WorkShift;
+    String name;
+    String job;
+}
+
+class WorkShift {
+	* -> 1 FoodTruck;
+    Date workDate;
+    Time startTime;
+    Time endTime;
+}
+
+class Equipment {
+    * -> 1 EquipmentType;
+    Double quantity;
+    Date purchaseDate;
+}
+
+class EquipmentType {
+    String name;
+}
+
+class Supply {
+    * -> 1 SupplyType;
+    Double quantity;
+}
+
+class SupplyType {
+    String name;
+}
+
+class Menu {
+    String name;
+    1 -> * MenuItem;
+}
+
+class MenuItem {
+    /** All the supplies required to cook that item */
+    1 -> * Supply;
+    String name;
+    /** The item's price in cents */
+    Integer price;
+}
+
+
+class Order {
+    1 -> * MenuItem;
+    Date orderDate;
+    Time orderTime;
+    /** Has the order been paid by the customer ? */
+    Boolean paid;
+    /** Has the order been served to the customer ? */
+    Boolean served;
+}
